@@ -267,8 +267,12 @@ def format_filename(s, length=MAX_FIELD_LENGTH, _truncate_only=False):
         filename = s
 
     # limit `length` chars
-    if len(filename) >= length:
-        filename = filename[:length - 1] + u'…'
+    truncated = False
+    while len(filename.encode()) >= length:
+        filename = filename[:-1]
+        truncated = True
+    if truncated:
+        filename += u'…'
 
     # Remove [] from filename
     filename = filename.replace('[]', '').strip()
